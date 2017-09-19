@@ -1,1 +1,2 @@
 zgiot-server-tools
+test
