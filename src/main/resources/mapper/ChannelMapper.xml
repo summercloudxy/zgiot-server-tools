@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zgiot.kepserver.dao.ChannelDao">
+    <resultMap id="ProjectMap" type="com.zgiot.kepserver.pojo.Project">
+        <collection property="channels" resultMap="ChannelMap"/>
+    </resultMap>
+
+    <resultMap id="ChannelMap" type="com.zgiot.kepserver.pojo.Channel">
+        <result property="name" column="channel_name"/>
+        <result property="description" column="channel_description"/>
+        <result property="multipleTypesDeviceDriver" column="multiple_types_device_driver"/>
+        <result property="networkAdapter" column="network_adapter"/>
+        <result property="modbusPortNumber" column="modbus_port_number"/>
+        <result property="modbusProtocol" column="modbus_protocol"/>
+        <result property="modbusMaxSockets" column="modbus_max_sockets"/>
+        <result property="modbusOneOrMoreSockets" column="modbus_one_or_more_sockets"/>
+        <collection property="deviceList" resultMap="DeviceMap"/>
+    </resultMap>
+
+    <resultMap id="DeviceMap" type="com.zgiot.kepserver.pojo.Device">
+        <result property="name" column="device_name"/>
+        <result property="description" column="device_description"/>
+        <result property="driver" column="driver"/>
+        <result property="model" column="model"/>
+        <result property="ip" column="ip"/>
+        <result property="scanMode" column="scan_mode"/>
+        <result property="scanRate" column="device_scan_rate"/>
+        <result property="portNumber" column="port_number"/>
+        <result property="modbusPortNumber" column="modbus_port_number"/>
+        <collection property="tags" resultMap="TagMap"/>
+    </resultMap>
+
+    <resultMap id="TagMap" type="com.zgiot.kepserver.pojo.Tag">
+        <result property="name" column="tag_name"/>
+        <result property="description" column="tag_description"/>
+        <result property="address" column="address"/>
+        <result property="dataType" column="data_type"/>
+        <result property="readWriteAccess" column="read_write_access"/>
+        <result property="scanRate" column="scan_rate"/>
+    </resultMap>
+
+    <select id="findAllChannels" resultMap="ChannelMap">
+        SELECT
+            c.name        AS channel_name,
+            c.description AS channel_description,
+            c.network_adapter,
+            c.multiple_types_device_driver,
+            c.modbus_max_sockets,
+            c.modbus_one_or_more_sockets,
+            c.modbus_port_number,
+            c.modbus_protocol,
+            d.name as device_name,
+            d.description as device_description,
+            d.driver,
+            d.ip,
+            d.scan_mode,
+            d.scan_rate as device_scan_rate,
+            d.model,
+            d.port_number,
+            d.modbus_port_number,
+            t.name as tag_name,
+            t.description as tag_description,
+            t.address,
+            t.data_type,
+            t.`read_write`,
+            t.scan_rate
+        FROM channels_profile c, devices_profile d, tags_profile t
+        WHERE t.channel_name = c.name AND t.device_name = d.name AND  c.name =d.channel_name
+        and t.profile = #{profile} and c.profile = #{profile} and d.profile = #{profile}
+
+    </select>
+
+</mapper>
