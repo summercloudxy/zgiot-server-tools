@@ -31,7 +31,7 @@
     </resultMap>
 
     <resultMap id="TagMap" type="com.zgiot.kepserver.pojo.Tag">
-        <result property="name" column="tag_name"/>
+        <result property="tagName" column="tag_name"/>
         <result property="description" column="tag_description"/>
         <result property="address" column="address"/>
         <result property="dataType" column="data_type"/>
@@ -69,5 +69,70 @@
         and t.profile = #{profile} and c.profile = #{profile} and d.profile = #{profile}
 
     </select>
+
+    <select id="findAllChannelsWithoutTags" resultMap="ChannelMap">
+        SELECT
+            c.name        AS channel_name,
+            c.description AS channel_description,
+            c.network_adapter,
+            c.multiple_types_device_driver,
+            c.modbus_max_sockets,
+            c.modbus_one_or_more_sockets,
+            c.modbus_port_number,
+            c.modbus_protocol,
+            d.name as device_name,
+            d.description as device_description,
+            d.driver,
+            d.ip,
+            d.scan_mode,
+            d.scan_rate as device_scan_rate,
+            d.model,
+            d.port_number,
+            d.modbus_port_number
+        FROM channels_profile c, devices_profile d
+        WHERE  c.name =d.channel_name and c.profile = #{profile} and d.profile = #{profile}
+    </select>
+
+    <insert id="insertLabelRecords" parameterType="com.zgiot.kepserver.pojo.Label">
+        INSERT INTO rel_thing_metric_label (thing_code, metric_code, label_path, enabled, bool_reverse) VALUES
+            <foreach collection="labelList" item="label" separator="),(" open="(" close=")">
+                    #{label.thingCode},#{label.metricCode},#{label.labelPath},#{label.enabled},#{label.boolReverse}
+            </foreach>
+    </insert>
+
+    <insert id="insertTagRecords" parameterType="com.zgiot.kepserver.pojo.Tag">
+        INSERT INTO tags_profile ( name, description, address, data_type, `read_write`, scan_rate, channel_name, device_name, profile) VALUES
+            <foreach collection="tagList" item="tag" separator="),(" open="(" close=")">
+                #{tag.tagName},#{tag.description},#{tag.address},#{tag.dataType},#{tag.readWriteAccess},#{tag.scanRate},#{tag.channelName},#{tag.deviceName},#{profile}
+            </foreach>
+    </insert>
+
+    <delete id="delLabels">
+        TRUNCATE rel_thing_metric_label;
+    </delete>
+
+    <delete id="delProfileTags">
+        DELETE FROM tags_profile WHERE profile = #{profile}
+    </delete>
+
+    <delete id="delTabSignal">
+        TRUNCATE tab_signal;
+    </delete>
+
+    <insert id="insertTabSignal" parameterType="com.zgiot.kepserver.pojo.TabSignal">
+        INSERT INTO tab_signal ( deviceId,typeId, name, dataLabel, type,  boolReal, enableCondition,  deviceCode,  state, unit, channel) VALUES
+        <foreach collection="signalList" item="signal" separator="),(" open="(" close=")">
+            #{signal.deviceId},#{signal.typeId},#{signal.name},#{signal.dataLabel},#{signal.type},#{signal.boolReal},#{signal.enableCondition},#{signal.deviceCode},#{signal.state},#{signal.unit},#{signal.channel}
+        </foreach>
+    </insert>
+
+    <select id="getMetricCodeAndName" resultType="com.zgiot.kepserver.pojo.Label">
+        SELECT metric_code,metric_name FROM tb_metric
+    </select>
+
+    <select id="getDeviceIdAndCode" resultType="com.zgiot.kepserver.pojo.TabSignal">
+        SELECT object_id as deviceId,location_serial_num as deviceCode FROM sff_production_location;
+    </select>
+
 
 </mapper>

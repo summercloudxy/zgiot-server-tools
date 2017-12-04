@@ -5,7 +5,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 public class Tag {
 
     @JSONField(name = "common.ALLTYPES_NAME")
-    private String name;
+    private String tagName;
     @JSONField(name = "common.ALLTYPES_DESCRIPTION")
     private String description;
     @JSONField(name = "servermain.TAG_ADDRESS")
@@ -15,14 +15,34 @@ public class Tag {
     @JSONField(name = "servermain.TAG_READ_WRITE_ACCESS")
     private Integer readWriteAccess=1;
     @JSONField(name = "servermain.TAG_SCAN_RATE_MILLISECONDS")
-    private Integer scanRate=100;
+    private Integer scanRate=1000;
+    @JSONField(serialize = false)
+    private String channelName;
+    @JSONField(serialize = false)
+    private String deviceName;
 
-    public String getName() {
-        return name;
+    public String getTagName() {
+        return tagName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
+    }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
     }
 
     public String getDescription() {
