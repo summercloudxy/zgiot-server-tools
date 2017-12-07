@@ -8,7 +8,7 @@ public class Label {
     private String metricCode;
     private String labelPath;
     private Long enabled;
-    private Long boolReverse;
+    private Long boolReverse=0L;
 
     public String getMetricName() {
         return metricName;

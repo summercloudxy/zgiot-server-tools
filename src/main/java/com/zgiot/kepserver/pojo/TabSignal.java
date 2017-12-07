@@ -6,7 +6,7 @@ public class TabSignal {
     private String dataLabel;
     private Short type;
     private Short boolReal;
-    private Short enableCondition;
+    private Short enableCondition=1;
     private String deviceCode;
     private Short state;
     private String channel;

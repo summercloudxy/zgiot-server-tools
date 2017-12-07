@@ -26,7 +26,10 @@ public class Device {
     private Integer portNumber;
     @JSONField(ordinal = 8,name = "modbus_ethernet.DEVICE_ETHERNET_PORT_NUMBER")
     private Integer modbusPortNumber;
-    @JSONField(ordinal = 9,name = "tags")
+    @JSONField(ordinal = 9,name = "controllogix_ethernet.DEVICE_PROTOCOL_MODE")
+    private Integer protocolMode;
+
+    @JSONField(ordinal = 10,name = "tags")
     private List<Tag> tags;
 
     public String getName() {

@@ -27,6 +27,7 @@
         <result property="scanRate" column="device_scan_rate"/>
         <result property="portNumber" column="port_number"/>
         <result property="modbusPortNumber" column="modbus_port_number"/>
+        <result property="protocolMode" column="protocol_mode"/>
         <collection property="tags" resultMap="TagMap"/>
     </resultMap>
 
@@ -58,6 +59,7 @@
             d.model,
             d.port_number,
             d.modbus_port_number,
+            d.protocol_mode,
             t.name as tag_name,
             t.description as tag_description,
             t.address,
@@ -88,7 +90,8 @@
             d.scan_rate as device_scan_rate,
             d.model,
             d.port_number,
-            d.modbus_port_number
+            d.modbus_port_number,
+            d.protocol_mode
         FROM channels_profile c, devices_profile d
         WHERE  c.name =d.channel_name and c.profile = #{profile} and d.profile = #{profile}
     </select>
