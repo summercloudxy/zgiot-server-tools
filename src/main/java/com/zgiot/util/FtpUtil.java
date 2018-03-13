@@ -95,7 +95,6 @@ public class FtpUtil {
             for (FTPFile ff : fs) {
                 if (ff.getName().equals(fileName)) {
                     File localFile = new File(localPath + "/" + ff.getName());
-
                     OutputStream is = new FileOutputStream(localFile);
                     ftp.retrieveFile(ff.getName(), is);
                     is.close();

@@ -64,7 +64,6 @@ public class KepJsonController {
         }
         Path jsonPath = Paths.get(outputPath, fileName);
         JsonFile jsonFileContainDataLogger = service.getDataLogger(profile);
-//        List<Channel> allChannels = service.findAllChannels(profile);
         ExcelData excelData;
         try {
             excelData = service.disposeDBExcel(excelPath, profile);
@@ -108,13 +107,6 @@ public class KepJsonController {
         FtpUtil.deleteFileFtp(hostName, username, password, kepUploadPath, fileName);
     }
 
-//
-//    @RequestMapping(value = "/test", method = RequestMethod.GET)
-//    public void test() throws Exception{
-//        try{service.readExcel();}
-//        catch (Exception e){
-//            e.printStackTrace();
-//        }
-//    }
+
 
 }
