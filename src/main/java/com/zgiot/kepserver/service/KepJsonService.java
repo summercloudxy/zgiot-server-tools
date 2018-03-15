@@ -216,19 +216,70 @@ public class KepJsonService {
                 Class type = field.getType();
                 try {
                     if (Integer.class.equals(type)) {
-                        field.set(object, (int) cell.getNumericCellValue());
+                        if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+                            if (!"".equals(cell.getStringCellValue())) {
+                                field.set(object, Integer.parseInt(cell.getStringCellValue()));
+                            }
+                        } else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+                            field.set(object, (int) cell.getNumericCellValue());
+                        } else if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
+                            if (cell.getCachedFormulaResultType() == Cell.CELL_TYPE_NUMERIC) {
+                                field.set(object, (int) cell.getNumericCellValue());
+                            } else if (cell.getCachedFormulaResultType() == Cell.CELL_TYPE_STRING) {
+                                if (!"".equals(cell.getStringCellValue())) {
+                                    field.set(object, Integer.parseInt(cell.getStringCellValue()));
+                                }
+                            }
+                        }
                     } else if (Double.class.equals(type)) {
-                        field.set(object, cell.getNumericCellValue());
+                        if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+                            if (!"".equals(cell.getStringCellValue())) {
+                                field.set(object, Double.parseDouble(cell.getStringCellValue()));
+                            }
+                        } else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+                            field.set(object,  cell.getNumericCellValue());
+                        } else if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
+                            if (cell.getCachedFormulaResultType() == Cell.CELL_TYPE_NUMERIC) {
+                                field.set(object,  cell.getNumericCellValue());
+                            } else if (cell.getCachedFormulaResultType() == Cell.CELL_TYPE_STRING) {
+                                if (!"".equals(cell.getStringCellValue())) {
+                                    field.set(object, Double.parseDouble(cell.getStringCellValue()));
+                                }
+                            }
+                        }
                     } else if (Short.class.equals(type)) {
                         if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
                             if (!"".equals(cell.getStringCellValue())) {
                                 field.set(object, Short.parseShort(cell.getStringCellValue()));
                             }
-                        } else {
-                            field.set(object, (short) cell.getNumericCellValue());
+                        } else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+                            field.set(object, (short)  cell.getNumericCellValue());
+                        } else if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
+                            if (cell.getCachedFormulaResultType() == Cell.CELL_TYPE_NUMERIC) {
+                                field.set(object, (short)  cell.getNumericCellValue());
+                            } else if (cell.getCachedFormulaResultType() == Cell.CELL_TYPE_STRING) {
+                                if (!"".equals(cell.getStringCellValue())) {
+                                    field.set(object, Short.parseShort(cell.getStringCellValue()));
+                                }
+                            }
                         }
                     } else if (Long.class.equals(type)) {
-                        field.set(object, (long) cell.getNumericCellValue());
+                        if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+                            if (!"".equals(cell.getStringCellValue())) {
+                                field.set(object, Long.parseLong(cell.getStringCellValue()));
+                            }
+                        } else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+                            field.set(object, (long) cell.getNumericCellValue());
+                        } else if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
+                            if (cell.getCachedFormulaResultType() == Cell.CELL_TYPE_NUMERIC) {
+                                field.set(object, (long) cell.getNumericCellValue());
+                            } else if (cell.getCachedFormulaResultType() == Cell.CELL_TYPE_STRING) {
+                                if (!"".equals(cell.getStringCellValue())) {
+                                    field.set(object, Long.parseLong(cell.getStringCellValue()));
+                                }
+                            }
+                        }
+
                     } else if (type.equals(String.class)) {
                         if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
                             field.set(object, cell.getStringCellValue());
