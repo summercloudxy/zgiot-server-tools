@@ -1,6 +1,7 @@
 package com.zgiot.kepserver.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.zgiot.common.exceptions.SysException;
 import com.zgiot.common.restcontroller.ServerResponse;
 import com.zgiot.kepserver.pojo.ExcelData;
@@ -63,7 +64,10 @@ public class KepJsonController {
             }
         }
         Path jsonPath = Paths.get(outputPath, fileName);
-        JsonFile jsonFileContainDataLogger = service.getDataLogger(profile);
+//        JsonFile jsonFileContainDataLogger = service.getDataLogger(profile);
+        JsonFile jsonFileContainDataLogger = new JsonFile();
+        Project project = new Project();
+        jsonFileContainDataLogger.setProject(project);
         ExcelData excelData;
         try {
             excelData = service.disposeDBExcel(excelPath, profile);
@@ -71,17 +75,17 @@ public class KepJsonController {
             e.printStackTrace();
             throw new SysException("解析excel文件错误", SysException.EC_UNKNOWN);
         }
-        Project project = jsonFileContainDataLogger.getProject();
+//        Project project = jsonFileContainDataLogger.getProject();
         project.setChannels(excelData.getChannels());
         try (FileOutputStream fileOutputStream = new FileOutputStream(jsonPath.toFile())) {
-            JSON.writeJSONString(fileOutputStream, UTF_8, jsonFileContainDataLogger);
+            JSON.writeJSONString(fileOutputStream, UTF_8, jsonFileContainDataLogger, SerializerFeature.PrettyFormat);
         } catch (IOException e) {
             throw new SysException("输出文件错误", SysException.EC_UNKNOWN);
         }
         String tmlName = service.generateTMLSql(excelData.getLabels(), profile, outputPath, generateTime);
         Path tmlPath = Paths.get(outputPath,tmlName);
-        String tabSignalName = service.generateTabSignalSql(excelData.getTabSignals(), profile, outputPath, generateTime);
-        Path tabSignalPath = Paths.get(outputPath,tabSignalName);
+//        String tabSignalName = service.generateTabSignalSql(excelData.getTabSignals(), profile, outputPath, generateTime);
+//        Path tabSignalPath = Paths.get(outputPath,tabSignalName);
         if (isUpload) {
             try (InputStream inputStream = new FileInputStream(jsonPath.toFile())) {
                 FtpUtil.uploadFile(hostName, username, password, kepUploadPath, fileName, inputStream);
@@ -93,11 +97,11 @@ public class KepJsonController {
             } catch (IOException e) {
                 throw new SysException("上传tml文件至ftp服务器错误", SysException.EC_UNKNOWN);
             }
-            try (InputStream inputStream = new FileInputStream(tabSignalPath.toFile())) {
-                FtpUtil.uploadFile(hostName, username, password, tabSignalUploadPath, tabSignalName, inputStream);
-            } catch (IOException e) {
-                throw new SysException("上传signal文件至ftp服务器错误", SysException.EC_UNKNOWN);
-            }
+//            try (InputStream inputStream = new FileInputStream(tabSignalPath.toFile())) {
+//                FtpUtil.uploadFile(hostName, username, password, tabSignalUploadPath, tabSignalName, inputStream);
+//            } catch (IOException e) {
+//                throw new SysException("上传signal文件至ftp服务器错误", SysException.EC_UNKNOWN);
+//            }
         }
         return new ResponseEntity<>(ServerResponse.buildOkJson(null), HttpStatus.OK);
     }
