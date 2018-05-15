@@ -60,8 +60,8 @@ public class KepJsonService {
         updateLabelData(profile, labels);
         updateTagData(profile, tags);
         //old
-        List<TabSignal> tabSignalList = excelData.getTabSignals();
-        updateTabSignal(tabSignalList);
+//        List<TabSignal> tabSignalList = excelData.getTabSignals();
+//        updateTabSignal(tabSignalList);
         return constructChannel(profile, excelData);
     }
 
