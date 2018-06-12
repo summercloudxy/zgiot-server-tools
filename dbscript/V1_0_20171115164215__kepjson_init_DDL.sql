@@ -29,7 +29,7 @@ CREATE TABLE `channels_profile` (
   `modbus_protocol` tinyint(4) DEFAULT NULL COMMENT 'modbus_ethernet.CHANNEL_ETHERNET_PROTOCOL',
   `modbus_max_sockets` tinyint(4) DEFAULT NULL COMMENT 'modbus_ethernet.CHANNEL_MAXIMUM_SOCKETS_PER_DEVICE',
   `modbus_one_or_more_sockets` tinyint(4) DEFAULT NULL COMMENT 'modbus_ethernet.CHANNEL_USE_ONE_OR_MORE_SOCKETS_PER_DEVICE',
-  `profile` varchar(10) DEFAULT NULL,
+  `profile` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `name` (`name`,`profile`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=382 DEFAULT CHARSET=utf8;
@@ -136,7 +136,7 @@ CREATE TABLE `devices_profile` (
   `port_number` int(10) DEFAULT NULL COMMENT 'controllogix_ethernet.DEVICE_PORT_NUMBER  default:44818',
   `modbus_port_number` int(10) DEFAULT NULL COMMENT 'modbus_ethernet.DEVICE_ETHERNET_PORT_NUMBER  default：502',
   `channel_name` varchar(20) DEFAULT NULL,
-  `profile` varchar(10) DEFAULT NULL,
+  `profile` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `name` (`name`,`channel_name`,`profile`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=557 DEFAULT CHARSET=utf8;
